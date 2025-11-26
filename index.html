@@ -8,12 +8,10 @@
 <style>
 body {
   margin: 0;
-  background: #021a13; /* sehr dunkles Grün, fast schwarz */
+  background: #000;
   color: #fff;
   font-family: 'Arial', sans-serif;
   overflow-x: hidden;
-  position: relative;
-  top: -7.5vh;
 }
 
 canvas {
@@ -37,12 +35,8 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: -120px auto 0 auto; /* 2% weiter nach unten als zuvor */
+  margin: 20px auto;
   max-width: 800px;
-  position: relative;
-  z-index: 3; /* Über die Animation legen */
-  transform: scale(0.52);
-  transform-origin: top center;
 }
 
 .tree-container details {
@@ -100,19 +94,18 @@ h1 {
 }
 
 .gothic-title {
-  font-family: 'Cloister Black', 'UnifrakturCook', 'Engravers Fraktur', 'Gutenberg', serif;
+  font-family: 'UnifrakturCook', 'Engravers Fraktur', 'Gutenberg', serif;
   font-size: 64px;
-  font-weight: 300;
+  font-weight: 700;
   text-align: center;
   margin: 24px 0 0 0;
   letter-spacing: 0.04em;
-  color: #021a13; /* Schriftzug exakt wie Hintergrundfarbe */
-  opacity: 0.1375; /* Deckkraft um weitere 50% reduziert */
+  color: #cdece4;
+  opacity: 0.55;
   background: none;
   transition: opacity 0.3s, filter 0.3s;
   pointer-events: none;
   user-select: none;
-  z-index: 0; /* Schriftzug hinter die Animation */
 }
 </style>
 </head>
@@ -215,12 +208,12 @@ let W=0,H=0;
 
 function fitCanvas(){
   const r = canvas.getBoundingClientRect();
-  W = Math.max(600, Math.floor(r.width * 1.2)); // Animation um 20% vergrößert
-  H = Math.max(300, Math.floor(r.height * 1.2));
+  W = Math.max(600, Math.floor(r.width));
+  H = Math.max(300, Math.floor(r.height));
   canvas.width = Math.floor(W*dpr);
   canvas.height = Math.floor(H*dpr);
-  canvas.style.width = r.width + 'px'; // Canvas bleibt gleich groß
-  canvas.style.height = r.height + 'px';
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 fitCanvas();
@@ -350,43 +343,38 @@ function renderFrame(tms){
   const newDpr = window.devicePixelRatio || 1;
   if(newDpr!==dpr){ dpr=newDpr; fitCanvas(); }
 
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(0, 0, W, H);
-  ctx.clip();
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#00161a'); g.addColorStop(1,'#000204');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-  // Kein Hintergrund mehr zeichnen
-  // ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  // ctx.globalAlpha=0.12;
-  // ctx.fillStyle='rgba(0,8,12,1)';
-  // ctx.fillRect(0,0,W,H);
-  // ctx.globalAlpha=1.0;
+  ctx.globalAlpha=0.12;
+  ctx.fillStyle='rgba(0,8,12,1)';
+  ctx.fillRect(-40,-20,W+120,H+40);
+  ctx.globalAlpha=1.0;
 
   ctx.lineCap='round';
-  // Noch dunklere Linien für DEEP_EDGES
   for(let e of DEEP_EDGES){
     const A=DEEP_NODES[e.a], B=DEEP_NODES[e.b];
     const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
     ctx.lineWidth=2.6*e.str;
-    ctx.strokeStyle='rgba(0,160,140,0.0096)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(0,160,140,0.055)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.9*e.str;
-    ctx.strokeStyle='rgba(0,210,180,0.021)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(0,210,180,0.12)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
   }
 
-  // Noch dunklere Linien für EDGES
   for(let e of EDGES){
     const A=NODES[e.a], B=NODES[e.b];
     const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
     ctx.lineWidth=1.2*e.strength;
-    ctx.strokeStyle='rgba(26,170,150,0.0061)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(26,170,150,0.035)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.9*e.strength;
-    ctx.strokeStyle='rgba(80,230,200,0.0114)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(80,230,200,0.065)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.5*(0.6 + e.strength*0.8);
-    ctx.strokeStyle='rgba(120,255,220,0.021)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(120,255,220,0.12)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
   }
 
@@ -428,24 +416,21 @@ function renderFrame(tms){
     p.life-=0.0012;
   }
 
-  // Knoten ebenfalls dunkler
   for(let n of NODES){
     const b=0.78+0.32*Math.sin(t*1.42+n.phase);
     const sx=n.x*W, sy=n.y*H;
     ctx.globalCompositeOperation='lighter';
     const grad=ctx.createRadialGradient(sx,sy,0,sx,sy,n.radius*1.6*b);
-    grad.addColorStop(0,'rgba(16,200,170,0.06)'); // 50% weniger Helligkeit
+    grad.addColorStop(0,'rgba(16,200,170,0.12)');
     grad.addColorStop(1,'transparent');
     ctx.fillStyle=grad;
     ctx.beginPath(); ctx.arc(sx,sy,n.radius*1.6*b,0,Math.PI*2); ctx.fill();
     ctx.globalCompositeOperation='source-over';
     ctx.beginPath();
-    ctx.fillStyle=`rgba(120,255,220,${(0.9-n.bio*0.4)*0.5})`; // 50% weniger Helligkeit
+    ctx.fillStyle=`rgba(120,255,220,${0.9-n.bio*0.4})`;
     ctx.arc(sx,sy,n.radius*0.9*b,0,Math.PI*2);
     ctx.fill();
   }
-
-  ctx.restore();
 
   updateGothicTitle(t);
 
