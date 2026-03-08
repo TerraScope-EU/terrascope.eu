@@ -1,87 +1,138 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TerraScope</title>
-<!-- Gothic Fraktur Webfont (Google Fonts Alternative: UnifrakturCook) -->
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&amp;display=swap" rel="stylesheet">
 <style>
-body {
-  margin: 0;
-  background: #021a13; /* sehr dunkles Grün, fast schwarz */
-  color: #fff;
-  font-family: 'Arial', sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+:root {
+  --bg: #021a13;
+  --line: #00c7a3;
+  --text: #cdece4;
+  --canvas-ratio: 1200 / 620;
 }
 
-canvas {
-  border-radius: 14px;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.main-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 0.75rem 0 1.5rem;
+}
+
+.tree-scene-frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.tree-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.tree-trunk-frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.canvas-stage {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  aspect-ratio: var(--canvas-ratio);
   display: block;
   margin: 0 auto;
 }
 
+canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
 .gothic-title {
-  font-family: 'Cloister Black', 'UnifrakturCook', 'Engravers Fraktur', serif;
-  font-size: 18vw;                  /* skaliert auf fast gesamte Breite */
+  font-family: "Cloister Black", "UnifrakturCook", "Engravers Fraktur", "Gutenberg", serif;
+  font-size: clamp(44px, 12vw, 168px);
   font-weight: 300;
   text-align: center;
   margin: 0;
   letter-spacing: 0.04em;
-  color: rgba(2,26,19,0.1375) !important; /* sehr transparent, fast Hintergrundfarbe */
+  color: rgba(2, 26, 19, 0.75) !important;
+  opacity: 0.1375;
+  transition: opacity 0.3s, filter 0.3s;
   pointer-events: none;
   user-select: none;
-  position: fixed;                  /* fixiert beim Scrollen */
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;                       /* volle Breite */
-  z-index: 0;                        /* hinter der Animation */
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 100%);
+  width: 100%;
+  z-index: 2;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
 }
 
-h1 {
-  font-size: 48px;
-  font-weight: 700;
-  margin: 30px 0 0 0;
-  text-align: center;
-  background: linear-gradient(90deg,#9ef0d6,#00c7a3);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* =================== Tree Structure =================== */
 .tree-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: -120px auto 0 auto; /* 2% weiter nach unten als zuvor */
-  max-width: 800px;
+  margin: -46px auto 0 auto;
+  width: clamp(210px, 28vw, 360px);
   position: relative;
-  z-index: 3; /* Über die Animation legen */
-  transform: scale(0.52);
+  z-index: 3;
   transform-origin: top center;
+  will-change: transform;
 }
 
 .tree-container details {
   text-align: center;
-  border-left: 2px solid #00c7a3;
-  border-right: 2px solid #00c7a3;
-  padding: 6px 8px;  /* Kontur näher an Text */
+  border-left: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+  padding: 6px 8px;
   border-radius: 6px;
   margin-bottom: 10px;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease;
+  background: rgba(2, 26, 19, 0.15);
 }
 
-/* Organischer Stamm: oben zart, unten ca. 15% breiter */
+.tree-container details:hover,
+.tree-container details[open] {
+  border-left-color: #89f3dd;
+  border-right-color: #89f3dd;
+}
+
 .tree-container details:nth-child(1) { width: 35%; }
 .tree-container details:nth-child(2) { width: 36%; }
 .tree-container details:nth-child(3) { width: 37%; }
@@ -95,9 +146,9 @@ h1 {
 .tree-container summary {
   cursor: pointer;
   list-style: none;
-  font-size: 18px;
+  font-size: clamp(15px, 1.45vw, 18px);
   font-weight: 600;
-  color: #cdece4;
+  color: var(--text);
 }
 
 .tree-container summary::-webkit-details-marker {
@@ -111,166 +162,63 @@ h1 {
   margin: 4px auto 0 auto;
 }
 
+.tree-container details[open] summary::after {
+  transform: rotate(180deg);
+}
+
 .tree-container div {
-  font-size: 16px;
+  font-size: clamp(14px, 1.2vw, 16px);
   line-height: 1.4;
   margin-top: 8px;
-  color: #cdece4;
+  color: var(--text);
 }
 
 .footer {
   text-align: center;
-  margin: 50px 0 30px 0;
+  margin: 38px 0 16px 0;
   color: #777;
   font-size: 14px;
+  padding: 0 0.75rem;
 }
 
-.gothic-title {
-  font-family: 'Cloister Black', 'UnifrakturCook', 'Engravers Fraktur', 'Gutenberg', serif;
-  font-size: 64px;
-  font-weight: 300;
-  text-align: center;
-  margin: 24px 0 0 0;
-  letter-spacing: 0.04em;
-  color: rgba(2,26,19,0.75) !important; /* 75% Deckkraft für dunklen Schriftpart */
-  opacity: 0.1375; /* Deckkraft um weitere 50% reduziert */
-  background: none;
-  transition: opacity 0.3s, filter 0.3s;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0; /* Schriftzug hinter die Animation */
-  /* Highlight-Effekt mittig in jedem Buchstaben */
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* Für Firefox */
-  background-clip: text;
-}
-
-.main-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  width: 100vw;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .tree-container {
-    transform: scale(0.85);
-    max-width: 98vw;
-    margin-top: 0;
-  }
-  .gothic-title {
-    font-size: 12vw;
-  }
-  #gothicTitle {
-    font-size: 12vw !important;
-  }
-  canvas {
-    width: 98vw !important;
-    height: 48vw !important;
-    max-width: 100vw;
-    max-height: 60vh;
+    margin-top: -32px;
+    width: clamp(198px, 34vw, 320px);
   }
 }
 
-@media (max-width: 600px) {
-  .tree-container {
-    transform: scale(1);
-    max-width: 100vw;
-    margin-top: 0;
-  }
-  .gothic-title {
-    font-size: 9vw;
-  }
-  #gothicTitle {
-    font-size: 9vw !important;
-  }
-  canvas {
-    width: 98vw !important;
-    height: 54vw !important;
-    max-width: 100vw;
-    max-height: 60vh;
-  }
-}
-
-@media (max-width: 600px) and (orientation: portrait) {
-  html, body {
-    min-height: 100vh;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+@media (max-width: 640px) {
   .main-center {
-    min-height: 100vh;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
   }
-  .main-center > div {
-    width: 100vw;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+  .gothic-title {
+    font-size: clamp(38px, 11vw, 72px);
   }
-  canvas {
-    width: 98vw !important;
-    height: 44vw !important;
-    max-width: 100vw;
-    max-height: 38vh;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    display: block;
-  }
+
   .tree-container {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    max-width: 98vw;
-    transform: scale(0.98);
+    width: clamp(180px, 60vw, 265px);
+    gap: 0;
   }
-  #gothicTitle {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 10vw !important;
-    width: 100vw;
-    text-align: center;
-  }
+
   .tree-container details {
-    width: 92vw !important;
-    min-width: 0;
-    max-width: 98vw;
-    box-sizing: border-box;
+    margin-bottom: 8px;
+    border-radius: 5px;
   }
+
 }
 
 @media (orientation: portrait) {
-  .main-center {
-    min-height: 90vh;
-  }
-  canvas {
-    height: 54vw !important;
-    max-height: 60vh;
+  .tree-container {
+    margin-top: -68px;
   }
 }
 
 @media (orientation: landscape) {
-  .main-center {
-    min-height: 80vh;
-  }
-  canvas {
-    height: 38vw !important;
-    max-height: 60vh;
+  .tree-container {
+    margin-top: -20px;
   }
 }
 </style>
@@ -278,61 +226,66 @@ h1 {
 <body>
 
 <div class="main-center">
-  <div style="position:relative; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-    <canvas id="terra_canvas" width="1200" height="620" style="display:block; margin:0 auto; position:relative; z-index:1;"></canvas>
-    <!-- Gothic Title centered over the animation -->
-    <div id="gothicTitle" class="gothic-title" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2; width:100%; text-align:center; pointer-events:none;">TERRASCOPE</div>
-  </div>
+  <div id="treeSceneFrame" class="tree-scene-frame">
+    <div id="treeScene" class="tree-scene">
+      <div class="canvas-stage">
+        <canvas id="terra_canvas" width="1200" height="620"></canvas>
+        <div id="gothicTitle" class="gothic-title">TERRASCOPE</div>
+      </div>
 
-  <div class="tree-container">
-    <details>
-      <summary>Mission & Rationale</summary>
-      <div>Why TerraScope Exists
+      <div id="treeTrunkFrame" class="tree-trunk-frame">
+      <div id="treeTrunk" class="tree-container">
+        <details>
+          <summary>Mission &amp; Rationale</summary>
+          <div>Why TerraScope Exists
 Europe needs an autonomous, ground-based environmental intelligence layer that complements—not competes with—LEO missions. TerraScope delivers resilient, emission-free observation through a terrestrial optical mesh, enabling real-time insight into climate, agriculture, biodiversity, and crisis situations.</div>
-    </details>
-    <details>
-      <summary>System Architecture</summary>
-      <div>Decentralised Optical & Sensor Network
+        </details>
+        <details>
+          <summary>System Architecture</summary>
+          <div>Decentralised Optical &amp; Sensor Network
 A continental mesh of ground nodes, each capturing high-resolution optical and environmental data. Nodes communicate via secure ground-to-ground links and an optional GEO relay. Edge-processing reduces bandwidth, produces local alerts, and ensures operation even during communication outages.</div>
-    </details>
-    <details>
-      <summary> Development Roadmap</summary>
-      <div>Four Strategic Phases
-	1.	Field Integration – Early prototypes, agricultural pilots, and partner validation.
-	2.	Network Formation – Regional optical and radio linking of nodes.
-	3.	Rollout – Continental coverage, early-warning capabilities, agri-intelligence, climate monitoring.
-	4.	GEO Layer (Optional) – Precision calibration, sky-mapping, large-scale 3D reconstruction.</div>
-    </details>
-    <details>
-      <summary>Environmental & Agricultural Intelligence</summary>
-      <div>Real-Time Insights for Soil, Crops & Ecosystems
+        </details>
+        <details>
+          <summary>Development Roadmap</summary>
+          <div>Four Strategic Phases
+1. Field Integration – Early prototypes, agricultural pilots, and partner validation.
+2. Network Formation – Regional optical and radio linking of nodes.
+3. Rollout – Continental coverage, early-warning capabilities, agri-intelligence, climate monitoring.
+4. GEO Layer (Optional) – Precision calibration, sky-mapping, large-scale 3D reconstruction.</div>
+        </details>
+        <details>
+          <summary>Environmental &amp; Agricultural Intelligence</summary>
+          <div>Real-Time Insights for Soil, Crops &amp; Ecosystems
 Nodes collect long-interval image sequences and sensor data to analyse soil structure, crop performance, water dynamics, biodiversity patterns, and field variability. Designed to help farmers, researchers, and agencies optimise interventions and track environmental change.</div>
-    </details>
-    <details>
-      <summary>Collaboration & Partnerships</summary>
-      <div>Opportunities for Technical, Scientific & Policy Actors
+        </details>
+        <details>
+          <summary>Collaboration &amp; Partnerships</summary>
+          <div>Opportunities for Technical, Scientific &amp; Policy Actors
 TerraScope offers integration points for photonics, edge-AI, hydrology, biodiversity science, manufacturing, logistics, governance, and EU knowledge hubs. The system is designed for joint development, shared indicators, and coordinated validation.</div>
-    </details>
-    <details>
-      <summary>Research Integration</summary>
-      <div>Climate, Biodiversity & Hydrology Alignment
+        </details>
+        <details>
+          <summary>Research Integration</summary>
+          <div>Climate, Biodiversity &amp; Hydrology Alignment
 Supports predictive modelling, anomaly detection, long-term datasets, and multi-site observation campaigns. Enables harmonised protocols and cross-border collaboration across academic and institutional partners.</div>
-    </details>
-    <details>
-      <summary>Governance, Security & Ethic</summary>
-      <div>Legal Compliance, Data Stewardship & Cybersecurity
+        </details>
+        <details>
+          <summary>Governance, Security &amp; Ethic</summary>
+          <div>Legal Compliance, Data Stewardship &amp; Cybersecurity
 Framework for GDPR alignment, transparent data handling, secure telemetry, ethical AI integration, and environmental-risk protocols. Ensures responsible management of decentralised environmental networks.</div>
-    </details>
-    <details>
-      <summary>Impact & Communication</summary>
-      <div>Societal Value, Public Engagement & Knowledge Transfer
+        </details>
+        <details>
+          <summary>Impact &amp; Communication</summary>
+          <div>Societal Value, Public Engagement &amp; Knowledge Transfer
 Transforms complex observations into accessible tools for communities, farmers, decision-makers, and educators. Encourages citizen involvement and strengthens environmental literacy and policy impact across EU regions.</div>
-    </details>
-    <details>
-      <summary>Implementation & Deployment</summary>
-      <div>Scalable Production, Operations & Field Management
+        </details>
+        <details>
+          <summary>Implementation &amp; Deployment</summary>
+          <div>Scalable Production, Operations &amp; Field Management
 Covers manufacturing pathways, circular-economy principles, installation logistics, multi-site coordination, QA procedures, and operational risk monitoring. Ensures robust deployment at continental scale with long-term maintainability.</div>
-    </details>
+        </details>
+      </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -341,54 +294,49 @@ Covers manufacturing pathways, circular-economy principles, installation logisti
 </div>
 
 <script>
-// =================== TerraScope JS (Animation Krone) ===================
-
-// RNG Funktion
 function RNG(seed = 1337){
   let s = seed >>> 0;
   return function() {
-    s ^= s << 13; s ^= s >>> 17; s ^= s << 5;
+    s ^= s << 13;
+    s ^= s >>> 17;
+    s ^= s << 5;
     return ((s >>> 0) / 4294967295);
   };
 }
 
-// Polygon für Grenzen
 function euPath(n=2200){
   const p = [];
   for(let i=0;i<n;i++){
-    const θ = i/n * Math.PI*2;
-    const r = 5.12 + 2.48*Math.cos(θ) + 1.62*Math.cos(2*θ) + 0.94*Math.sin(3*θ)
-            -1.30*Math.cos(4*θ) + 0.78*Math.cos(6*θ) + 1.12*Math.pow(Math.cos(5*θ),3)
-            +1.02*Math.exp(-32*(θ-1.05)**2)-0.68*Math.exp(-48*(θ+1.32)**2)
-            +0.38*Math.tanh(3*θ)+0.36*Math.sin(8*θ);
-    const x = 0.5 + 0.0618*(r*Math.cos(θ) + 0.46*Math.sin(7*θ));
-    const y = 0.5 + 0.0618*(r*Math.sin(θ) + 1.12*Math.tanh(3*θ) + 0.32*Math.sin(9*θ));
+    const theta = i/n * Math.PI*2;
+    const r = 5.12 + 2.48*Math.cos(theta) + 1.62*Math.cos(2*theta) + 0.94*Math.sin(3*theta)
+            -1.30*Math.cos(4*theta) + 0.78*Math.cos(6*theta) + 1.12*Math.pow(Math.cos(5*theta),3)
+            +1.02*Math.exp(-32*(theta-1.05)**2)-0.68*Math.exp(-48*(theta+1.32)**2)
+            +0.38*Math.tanh(3*theta)+0.36*Math.sin(8*theta);
+    const x = 0.5 + 0.0618*(r*Math.cos(theta) + 0.46*Math.sin(7*theta));
+    const y = 0.5 + 0.0618*(r*Math.sin(theta) + 1.12*Math.tanh(3*theta) + 0.32*Math.sin(9*theta));
     p.push({x,y});
   }
   return p;
 }
 
-// Canvas Setup
 const canvas = document.getElementById('terra_canvas');
+const stage = document.querySelector('.canvas-stage');
+const trunkFrame = document.getElementById('treeTrunkFrame');
+const trunk = document.getElementById('treeTrunk');
+const footer = document.querySelector('.footer');
 const ctx = canvas.getContext('2d', { alpha: false });
-let dpr = window.devicePixelRatio || 1;
+let dpr = Math.min(window.devicePixelRatio || 1, 2);
 let W=0,H=0;
 
 function fitCanvas(){
-  const r = canvas.getBoundingClientRect();
-  let w = Math.max(320, Math.floor(r.width));
-  let h = Math.max(180, Math.floor(r.height));
-  // Responsive Anpassung für mobile Geräte
-  if(window.innerWidth < 600) {
-    w = Math.floor(window.innerWidth * 0.98);
-    h = Math.floor(window.innerHeight * 0.38);
-  } else if(window.innerWidth < 900) {
-    w = Math.floor(window.innerWidth * 0.98);
-    h = Math.floor(window.innerHeight * 0.48);
-  } else {
-    w = Math.max(600, Math.floor(r.width * 1.2));
-    h = Math.max(300, Math.floor(r.height * 1.2));
-  }
+  const r = stage.getBoundingClientRect();
+  const w = Math.max(320, Math.floor(r.width));
+  const h = Math.max(180, Math.floor(r.height));
+  const newDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  if (w === W && h === H && newDpr === dpr) return;
+
+  dpr = newDpr;
   canvas.width = Math.floor(w*dpr);
   canvas.height = Math.floor(h*dpr);
   canvas.style.width = w + 'px';
@@ -397,8 +345,59 @@ function fitCanvas(){
   H = h;
   ctx.setTransform(dpr,0,0,dpr,0,0);
 }
-fitCanvas();
-window.addEventListener('resize', ()=>{ clearTimeout(window._fit); window._fit = setTimeout(fitCanvas,120); });
+
+function fitTrunkToViewport() {
+  if (!trunk || !trunkFrame) return;
+
+  trunk.style.transform = 'scale(1)';
+  trunkFrame.style.height = 'auto';
+
+  const vv = window.visualViewport;
+  const viewportH = vv && vv.height ? vv.height : window.innerHeight;
+  const viewportW = vv && vv.width ? vv.width : window.innerWidth;
+  const isPortrait = viewportH >= viewportW;
+
+  if (!isPortrait) {
+    return;
+  }
+
+  const footerH = footer ? (footer.getBoundingClientRect().height + 10) : 0;
+  const frameTop = trunkFrame.getBoundingClientRect().top;
+  const naturalH = Math.max(1, trunk.getBoundingClientRect().height);
+  const availableH = Math.max(120, viewportH - frameTop - footerH - 6);
+  const scale = Math.min(1, availableH / naturalH);
+
+  trunk.style.transform = `scale(${scale})`;
+  trunkFrame.style.height = `${naturalH * scale}px`;
+}
+
+let fitRAF = 0;
+function scheduleFit() {
+  if (fitRAF) cancelAnimationFrame(fitRAF);
+  fitRAF = requestAnimationFrame(() => {
+    fitCanvas();
+    fitTrunkToViewport();
+  });
+}
+
+scheduleFit();
+const ro = new ResizeObserver(() => {
+  clearTimeout(window._fit);
+  window._fit = setTimeout(scheduleFit, 60);
+});
+ro.observe(stage);
+window.addEventListener('resize', () => {
+  clearTimeout(window._fit2);
+  window._fit2 = setTimeout(scheduleFit, 80);
+}, { passive: true });
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', scheduleFit, { passive: true });
+}
+
+document.querySelectorAll('.tree-container details').forEach((el) => {
+  el.addEventListener('toggle', () => setTimeout(scheduleFit, 0));
+});
 
 function pointInPoly(px, py, poly){
   let inside=false;
@@ -409,7 +408,6 @@ function pointInPoly(px, py, poly){
   return inside;
 }
 
-// =================== Nodes & Edges ===================
 const rnd = RNG(987654321);
 const boundary = euPath(2400);
 const NODES = [];
@@ -429,6 +427,7 @@ const NODES = [];
 const EDGES = [];
 (function linkNodes(){
   const maxNeighbors = 6;
+  const keys = new Set();
   for(let i=0;i<NODES.length;i++){
     const a = NODES[i];
     const list=[];
@@ -443,7 +442,8 @@ const EDGES = [];
     for(let k=0;k<Math.min(maxNeighbors,list.length);k++){
       const j = list[k].j;
       const key=[Math.min(i,j),Math.max(i,j)].join('-');
-      if(!EDGES.some(e=>e.key===key)){
+      if(!keys.has(key)){
+        keys.add(key);
         EDGES.push({a:i,b:j,key,strength:0.28 + rnd()*0.7});
       }
     }
@@ -479,9 +479,8 @@ function spawnPulseOnEdge(edgeIndex, deep=false){
   PULSES.push({fromIdx:e.a,toIdx:e.b,from:f,to:t,t:0,speed,layerDeep:deep,life:1.0,hue:170+Math.floor(rnd()*40)});
 }
 
-function tickSpawn(t){
+function tickSpawn(){
   const pcount=PULSES.length;
-  // Traffic: double the spawn probability for both edge types
   if(rnd()<0.56*(1+Math.min(pcount/40,2))*0.6){
     const eidx=Math.floor(rnd()*EDGES.length);
     if(eidx<EDGES.length) spawnPulseOnEdge(eidx,false);
@@ -492,29 +491,27 @@ function tickSpawn(t){
   }
 }
 
-// =================== Animation ===================
-let lastTime=0, heartbeatTimer=0;
+let lastTime=0;
+let heartbeatTimer=0;
 const HEARTBEAT_INTERVAL=8000;
 
-// Gothic Title Animation: Interacts with Nodes & Data Traffic
 const gothicTitle = document.getElementById('gothicTitle');
 function updateGothicTitle(t) {
-  // Calculate average node brightness
   let sum = 0;
-  for (let n of NODES) {
+  for (let i = 0; i < NODES.length; i++) {
+    const n = NODES[i];
     sum += 0.78 + 0.32 * Math.sin(t * 1.42 + n.phase);
   }
   const avg = sum / NODES.length;
-  // Count active pulses (traffic)
   const traffic = Math.min(PULSES.length, 120);
-  // Dynamische, aber begrenzte Helligkeit
-  const baseOpacity = 0.22 + 0.18 * avg; // Reduziert, damit es nie zu hell wird
-  const trafficBoost = 0.08 + 0.12 * (traffic / 120); // Weniger Einfluss durch Traffic
+
+  const baseOpacity = 0.22 + 0.18 * avg;
+  const trafficBoost = 0.08 + 0.12 * (traffic / 120);
   let dynamicOpacity = baseOpacity + trafficBoost;
-  dynamicOpacity = Math.max(0.18, Math.min(dynamicOpacity, 0.38)); // Begrenzung: nie zu hell, nie zu dunkel
+  dynamicOpacity = Math.max(0.18, Math.min(dynamicOpacity, 0.38));
+
   gothicTitle.style.opacity = dynamicOpacity.toFixed(2);
   gothicTitle.style.filter = `drop-shadow(0 0 ${8 + avg * 18 + traffic * 0.5}px #00c7a3)`;
-  // Leichte Farbverschiebung mit Traffic
   const hue = 170 + Math.floor(traffic * 0.3);
   gothicTitle.style.color = `hsl(${hue}, 60%, 80%)`;
 }
@@ -523,68 +520,67 @@ function renderFrame(tms){
   const t = tms*0.001;
   const dt = Math.min(0.05,(tms-lastTime)/1000||0.016);
   lastTime=tms;
-  const newDpr = window.devicePixelRatio || 1;
-  if(newDpr!==dpr){ dpr=newDpr; fitCanvas(); }
+
+  const newDpr = Math.min(window.devicePixelRatio || 1, 2);
+  if(newDpr!==dpr){
+    dpr = newDpr;
+    fitCanvas();
+  }
 
   ctx.save();
   ctx.beginPath();
   ctx.rect(0, 0, W, H);
   ctx.clip();
 
-  // Kein Hintergrund mehr zeichnen
-  // ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  // ctx.globalAlpha=0.12;
-  // ctx.fillStyle='rgba(0,8,12,1)';
-  // ctx.fillRect(0,0,W,H);
-  // ctx.globalAlpha=1.0;
-
   ctx.lineCap='round';
-  // Noch dunklere Linien für DEEP_EDGES
-  for(let e of DEEP_EDGES){
+
+  for(let i=0;i<DEEP_EDGES.length;i++){
+    const e = DEEP_EDGES[i];
     const A=DEEP_NODES[e.a], B=DEEP_NODES[e.b];
     const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
     ctx.lineWidth=2.6*e.str;
-    ctx.strokeStyle='rgba(0,160,140,0.0096)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(0,160,140,0.0096)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.9*e.str;
-    ctx.strokeStyle='rgba(0,210,180,0.021)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(0,210,180,0.021)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
   }
 
-  // Noch dunklere Linien für EDGES
-  for(let e of EDGES){
+  for(let i=0;i<EDGES.length;i++){
+    const e = EDGES[i];
     const A=NODES[e.a], B=NODES[e.b];
     const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
     ctx.lineWidth=1.2*e.strength;
-    ctx.strokeStyle='rgba(26,170,150,0.0061)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(26,170,150,0.0061)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.9*e.strength;
-    ctx.strokeStyle='rgba(80,230,200,0.0114)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(80,230,200,0.0114)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     ctx.lineWidth=0.5*(0.6 + e.strength*0.8);
-    ctx.strokeStyle='rgba(120,255,220,0.021)'; // 50% weniger Helligkeit
+    ctx.strokeStyle='rgba(120,255,220,0.021)';
     ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
   }
 
-  tickSpawn(t);
-  heartbeatTimer+=dt*1000;
-  if(heartbeatTimer>HEARTBEAT_INTERVAL){
-    heartbeatTimer=0;
+  tickSpawn();
+  heartbeatTimer += dt*1000;
+  if(heartbeatTimer > HEARTBEAT_INTERVAL){
+    heartbeatTimer = 0;
     for(let k=0;k<14;k++){
-      const idx=Math.floor(rnd()*EDGES.length);
+      const idx = Math.floor(rnd()*EDGES.length);
       spawnPulseOnEdge(idx,false);
     }
   }
 
   for(let i=PULSES.length-1;i>=0;i--){
     const p=PULSES[i];
-    p.t+=p.speed*(1+Math.min(PULSES.length/60,1.5));
-    if(p.t>1.01||p.life<=0){ PULSES.splice(i,1); continue; }
-    const x=p.from.x + (p.to.x - p.from.x)*p.t;
-    const y=p.from.y + (p.to.y - p.from.y)*p.t;
-    const screenX=x*W, screenY=y*H;
+    p.t += p.speed*(1+Math.min(PULSES.length/60,1.5));
+    if(p.t>1.01 || p.life<=0){ PULSES.splice(i,1); continue; }
+
+    const screenX=(p.from.x + (p.to.x - p.from.x)*p.t)*W;
+    const screenY=(p.from.y + (p.to.y - p.from.y)*p.t)*H;
     const headSize=(p.layerDeep?2.0:2.8)*(0.8+0.6*(1-Math.abs(0.5-p.t)));
     const tailCount=6;
+
     for(let s=0;s<tailCount;s++){
       const tt=p.t-s*0.038;
       if(tt<0) break;
@@ -592,7 +588,7 @@ function renderFrame(tms){
       const tx=p.from.x + (p.to.x-p.from.x)*tt;
       const ty=p.from.y + (p.to.y-p.from.y)*tt;
       const alpha=0.34*(1-s/tailCount)*kk*(p.layerDeep?0.9:1.0);
-      const size=headSize*(1-s/(tailCount+1))*(p.layerDeep?1.0:1.0);
+      const size=headSize*(1-s/(tailCount+1));
       ctx.globalCompositeOperation='lighter';
       const grad=ctx.createRadialGradient(screenX,screenY,0,screenX,screenY,size*1.4);
       grad.addColorStop(0, `hsla(${p.hue},88%,${p.layerDeep?55:62}%,${alpha})`);
@@ -604,19 +600,19 @@ function renderFrame(tms){
     p.life-=0.0012;
   }
 
-  // Knoten ebenfalls dunkler
-  for(let n of NODES){
+  for(let i=0;i<NODES.length;i++){
+    const n = NODES[i];
     const b=0.78+0.32*Math.sin(t*1.42+n.phase);
     const sx=n.x*W, sy=n.y*H;
     ctx.globalCompositeOperation='lighter';
     const grad=ctx.createRadialGradient(sx,sy,0,sx,sy,n.radius*1.6*b);
-    grad.addColorStop(0,'rgba(16,200,170,0.06)'); // 50% weniger Helligkeit
+    grad.addColorStop(0,'rgba(16,200,170,0.06)');
     grad.addColorStop(1,'transparent');
     ctx.fillStyle=grad;
     ctx.beginPath(); ctx.arc(sx,sy,n.radius*1.6*b,0,Math.PI*2); ctx.fill();
     ctx.globalCompositeOperation='source-over';
     ctx.beginPath();
-    ctx.fillStyle=`rgba(120,255,220,${(0.9-n.bio*0.4)*0.5})`; // 50% weniger Helligkeit
+    ctx.fillStyle=`rgba(120,255,220,${(0.9-n.bio*0.4)*0.5})`;
     ctx.arc(sx,sy,n.radius*0.9*b,0,Math.PI*2);
     ctx.fill();
   }
@@ -624,7 +620,6 @@ function renderFrame(tms){
   ctx.restore();
 
   updateGothicTitle(t);
-
   requestAnimationFrame(renderFrame);
 }
 
