@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,30 +34,11 @@ body {
 .main-center {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
   min-height: 100dvh;
   width: 100%;
-  padding: 0.75rem 0 1.5rem;
-}
-
-.tree-scene-frame {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.tree-scene {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.tree-trunk-frame {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  padding: 0.6rem 0 1rem;
 }
 
 .canvas-stage {
@@ -66,54 +46,54 @@ body {
   width: 100vw;
   max-width: 100vw;
   aspect-ratio: var(--canvas-ratio);
-  display: block;
-  margin: 0 auto;
 }
 
 canvas {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
   display: block;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  border-radius: 12px;
 }
 
 .gothic-title {
-  font-family: "Cloister Black", "UnifrakturCook", "Engravers Fraktur", "Gutenberg", serif;
-  font-size: clamp(44px, 12vw, 168px);
-  font-weight: 300;
-  text-align: center;
-  margin: 0;
-  letter-spacing: 0.04em;
-  color: rgba(2, 26, 19, 0.75) !important;
-  opacity: 0.1375;
-  transition: opacity 0.3s, filter 0.3s;
-  pointer-events: none;
-  user-select: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+  margin: 0;
+  text-align: center;
   z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  font-family: "Cloister Black", "UnifrakturCook", "Engravers Fraktur", "Gutenberg", serif;
+  font-weight: 300;
+  font-size: clamp(38px, 11vw, 160px);
+  letter-spacing: 0.04em;
+  opacity: 0.1375;
+  color: rgba(2, 26, 19, 0.75) !important;
+  transition: opacity 0.3s, filter 0.3s;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.trunk-frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .tree-container {
+  width: clamp(250px, 34vw, 430px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: -46px auto 0 auto;
-  width: clamp(210px, 28vw, 360px);
-  position: relative;
-  z-index: 3;
+  margin: 0 auto;
   transform-origin: top center;
   will-change: transform;
+  z-index: 3;
 }
 
 .tree-container details {
@@ -121,10 +101,10 @@ canvas {
   border-left: 2px solid var(--line);
   border-right: 2px solid var(--line);
   padding: 6px 8px;
+  margin-bottom: 9px;
   border-radius: 6px;
-  margin-bottom: 10px;
+  background: rgba(2, 26, 19, 0.14);
   transition: border-color 0.2s ease;
-  background: rgba(2, 26, 19, 0.15);
 }
 
 .tree-container details:hover,
@@ -146,8 +126,8 @@ canvas {
 .tree-container summary {
   cursor: pointer;
   list-style: none;
-  font-size: clamp(15px, 1.45vw, 18px);
-  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 18px);
+  font-weight: 700;
   color: var(--text);
 }
 
@@ -158,67 +138,48 @@ canvas {
 .tree-container summary::after {
   content: "▼";
   display: block;
+  margin-top: 4px;
   font-size: 12px;
-  margin: 4px auto 0 auto;
 }
 
 .tree-container details[open] summary::after {
   transform: rotate(180deg);
 }
 
-.tree-container div {
-  font-size: clamp(14px, 1.2vw, 16px);
-  line-height: 1.4;
-  margin-top: 8px;
+.tree-container p {
+  margin: 7px 0 0;
+  font-size: clamp(12px, 1.05vw, 14px);
+  line-height: 1.35;
   color: var(--text);
 }
 
 .footer {
   text-align: center;
-  margin: 38px 0 16px 0;
-  color: #777;
-  font-size: 14px;
+  color: #6f7f7a;
+  font-size: 13px;
+  margin: 14px 0 8px;
   padding: 0 0.75rem;
 }
 
 @media (max-width: 1000px) {
   .tree-container {
-    margin-top: -32px;
-    width: clamp(198px, 34vw, 320px);
+    width: clamp(230px, 38vw, 360px);
   }
 }
 
 @media (max-width: 640px) {
   .main-center {
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
-  }
-
-  .gothic-title {
-    font-size: clamp(38px, 11vw, 72px);
+    padding-top: 0.4rem;
+    padding-bottom: 0.7rem;
   }
 
   .tree-container {
-    width: clamp(180px, 60vw, 265px);
-    gap: 0;
+    width: clamp(210px, 64vw, 315px);
   }
 
   .tree-container details {
     margin-bottom: 8px;
     border-radius: 5px;
-  }
-
-}
-
-@media (orientation: portrait) {
-  .tree-container {
-    margin-top: -68px;
-  }
-}
-
-@media (orientation: landscape) {
-  .tree-container {
-    margin-top: -20px;
   }
 }
 </style>
@@ -226,153 +187,198 @@ canvas {
 <body>
 
 <div class="main-center">
-  <div id="treeSceneFrame" class="tree-scene-frame">
-    <div id="treeScene" class="tree-scene">
-      <div class="canvas-stage">
-        <canvas id="terra_canvas" width="1200" height="620"></canvas>
-        <div id="gothicTitle" class="gothic-title">TERRASCOPE</div>
-      </div>
+  <div class="canvas-stage" id="canvasStage">
+    <canvas id="terra_canvas" width="1200" height="620"></canvas>
+    <div id="gothicTitle" class="gothic-title">TERRASCOPE</div>
+  </div>
 
-      <div id="treeTrunkFrame" class="tree-trunk-frame">
-      <div id="treeTrunk" class="tree-container">
-        <details>
-          <summary>Mission &amp; Rationale</summary>
-          <div>Why TerraScope Exists
-Europe needs an autonomous, ground-based environmental intelligence layer that complements—not competes with—LEO missions. TerraScope delivers resilient, emission-free observation through a terrestrial optical mesh, enabling real-time insight into climate, agriculture, biodiversity, and crisis situations.</div>
-        </details>
-        <details>
-          <summary>System Architecture</summary>
-          <div>Decentralised Optical &amp; Sensor Network
-A continental mesh of ground nodes, each capturing high-resolution optical and environmental data. Nodes communicate via secure ground-to-ground links and an optional GEO relay. Edge-processing reduces bandwidth, produces local alerts, and ensures operation even during communication outages.</div>
-        </details>
-        <details>
-          <summary>Development Roadmap</summary>
-          <div>Four Strategic Phases
-1. Field Integration – Early prototypes, agricultural pilots, and partner validation.
-2. Network Formation – Regional optical and radio linking of nodes.
-3. Rollout – Continental coverage, early-warning capabilities, agri-intelligence, climate monitoring.
-4. GEO Layer (Optional) – Precision calibration, sky-mapping, large-scale 3D reconstruction.</div>
-        </details>
-        <details>
-          <summary>Environmental &amp; Agricultural Intelligence</summary>
-          <div>Real-Time Insights for Soil, Crops &amp; Ecosystems
-Nodes collect long-interval image sequences and sensor data to analyse soil structure, crop performance, water dynamics, biodiversity patterns, and field variability. Designed to help farmers, researchers, and agencies optimise interventions and track environmental change.</div>
-        </details>
-        <details>
-          <summary>Collaboration &amp; Partnerships</summary>
-          <div>Opportunities for Technical, Scientific &amp; Policy Actors
-TerraScope offers integration points for photonics, edge-AI, hydrology, biodiversity science, manufacturing, logistics, governance, and EU knowledge hubs. The system is designed for joint development, shared indicators, and coordinated validation.</div>
-        </details>
-        <details>
-          <summary>Research Integration</summary>
-          <div>Climate, Biodiversity &amp; Hydrology Alignment
-Supports predictive modelling, anomaly detection, long-term datasets, and multi-site observation campaigns. Enables harmonised protocols and cross-border collaboration across academic and institutional partners.</div>
-        </details>
-        <details>
-          <summary>Governance, Security &amp; Ethic</summary>
-          <div>Legal Compliance, Data Stewardship &amp; Cybersecurity
-Framework for GDPR alignment, transparent data handling, secure telemetry, ethical AI integration, and environmental-risk protocols. Ensures responsible management of decentralised environmental networks.</div>
-        </details>
-        <details>
-          <summary>Impact &amp; Communication</summary>
-          <div>Societal Value, Public Engagement &amp; Knowledge Transfer
-Transforms complex observations into accessible tools for communities, farmers, decision-makers, and educators. Encourages citizen involvement and strengthens environmental literacy and policy impact across EU regions.</div>
-        </details>
-        <details>
-          <summary>Implementation &amp; Deployment</summary>
-          <div>Scalable Production, Operations &amp; Field Management
-Covers manufacturing pathways, circular-economy principles, installation logistics, multi-site coordination, QA procedures, and operational risk monitoring. Ensures robust deployment at continental scale with long-term maintainability.</div>
-        </details>
-      </div>
-      </div>
+  <div id="trunkFrame" class="trunk-frame">
+    <div id="treeTrunk" class="tree-container">
+      <details>
+        <summary>Mission</summary>
+        <p>Autonomous EU ground intelligence for climate, agriculture, and crisis response.</p>
+      </details>
+
+      <details>
+        <summary>Architecture</summary>
+        <p>Distributed optical and sensor nodes with secure links and edge processing.</p>
+      </details>
+
+      <details>
+        <summary>Roadmap</summary>
+        <p>Pilot validation, regional networking, EU rollout, and optional GEO calibration.</p>
+      </details>
+
+      <details>
+        <summary>Agro-Environmental Intelligence</summary>
+        <p>Actionable indicators for soil, crop health, water behavior, and biodiversity trends.</p>
+      </details>
+
+      <details>
+        <summary>Partnerships</summary>
+        <p>Structured collaboration for photonics, AI, science, policy, and operations teams.</p>
+      </details>
+
+      <details>
+        <summary>Research Integration</summary>
+        <p>Standardized datasets and cross-site studies for modeling and anomaly detection.</p>
+      </details>
+
+      <details>
+        <summary>Governance &amp; Security</summary>
+        <p>GDPR-aligned stewardship, cybersecurity controls, and responsible AI safeguards.</p>
+      </details>
+
+      <details>
+        <summary>Impact</summary>
+        <p>Clear decision tools for agencies, farmers, communities, and public institutions.</p>
+      </details>
+
+      <details>
+        <summary>Deployment</summary>
+        <p>Scalable manufacturing, logistics, QA, and long-term lifecycle operations.</p>
+      </details>
     </div>
   </div>
 </div>
 
-<div class="footer">
-  © TerraScope — 2025 | Straight. Clear. Alive.
-</div>
+<div class="footer">© TerraScope — 2026 | Straight. Clear. Alive.</div>
 
 <script>
-function RNG(seed = 1337){
+function RNG(seed = 1337) {
   let s = seed >>> 0;
-  return function() {
+  return function next() {
     s ^= s << 13;
     s ^= s >>> 17;
     s ^= s << 5;
-    return ((s >>> 0) / 4294967295);
+    return (s >>> 0) / 4294967295;
   };
 }
 
-function euPath(n=2200){
+function euPath(n = 2200) {
   const p = [];
-  for(let i=0;i<n;i++){
-    const theta = i/n * Math.PI*2;
-    const r = 5.12 + 2.48*Math.cos(theta) + 1.62*Math.cos(2*theta) + 0.94*Math.sin(3*theta)
-            -1.30*Math.cos(4*theta) + 0.78*Math.cos(6*theta) + 1.12*Math.pow(Math.cos(5*theta),3)
-            +1.02*Math.exp(-32*(theta-1.05)**2)-0.68*Math.exp(-48*(theta+1.32)**2)
-            +0.38*Math.tanh(3*theta)+0.36*Math.sin(8*theta);
-    const x = 0.5 + 0.0618*(r*Math.cos(theta) + 0.46*Math.sin(7*theta));
-    const y = 0.5 + 0.0618*(r*Math.sin(theta) + 1.12*Math.tanh(3*theta) + 0.32*Math.sin(9*theta));
-    p.push({x,y});
+  for (let i = 0; i < n; i++) {
+    const theta = (i / n) * Math.PI * 2;
+    const r =
+      5.12 +
+      2.48 * Math.cos(theta) +
+      1.62 * Math.cos(2 * theta) +
+      0.94 * Math.sin(3 * theta) -
+      1.3 * Math.cos(4 * theta) +
+      0.78 * Math.cos(6 * theta) +
+      1.12 * Math.pow(Math.cos(5 * theta), 3) +
+      1.02 * Math.exp(-32 * (theta - 1.05) ** 2) -
+      0.68 * Math.exp(-48 * (theta + 1.32) ** 2) +
+      0.38 * Math.tanh(3 * theta) +
+      0.36 * Math.sin(8 * theta);
+
+    const x = 0.5 + 0.0618 * (r * Math.cos(theta) + 0.46 * Math.sin(7 * theta));
+    const y = 0.5 + 0.0618 * (r * Math.sin(theta) + 1.12 * Math.tanh(3 * theta) + 0.32 * Math.sin(9 * theta));
+    p.push({ x, y });
   }
   return p;
 }
 
-const canvas = document.getElementById('terra_canvas');
-const stage = document.querySelector('.canvas-stage');
-const trunkFrame = document.getElementById('treeTrunkFrame');
-const trunk = document.getElementById('treeTrunk');
-const footer = document.querySelector('.footer');
-const ctx = canvas.getContext('2d', { alpha: false });
-let dpr = Math.min(window.devicePixelRatio || 1, 2);
-let W=0,H=0;
+function pointInPoly(px, py, poly) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const a = poly[i];
+    const b = poly[j];
+    if (((a.y > py) !== (b.y > py)) && (px < ((b.x - a.x) * (py - a.y)) / (b.y - a.y + 1e-12) + a.x)) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
 
-function fitCanvas(){
+const canvas = document.getElementById("terra_canvas");
+const stage = document.getElementById("canvasStage");
+const trunkFrame = document.getElementById("trunkFrame");
+const trunk = document.getElementById("treeTrunk");
+const footer = document.querySelector(".footer");
+const gothicTitle = document.getElementById("gothicTitle");
+const ctx = canvas.getContext("2d", { alpha: false });
+
+let dpr = Math.min(window.devicePixelRatio || 1, 2);
+let W = 0;
+let H = 0;
+let fitRAF = 0;
+
+function isZoomedViewport() {
+  const vv = window.visualViewport;
+  if (!vv || typeof vv.scale !== "number") return false;
+  return Math.abs(vv.scale - 1) > 0.01;
+}
+
+function fitCanvas() {
+  const vv = window.visualViewport;
+  const viewportW = vv && vv.width ? vv.width : window.innerWidth;
+  stage.style.width = Math.max(120, Math.floor(viewportW)) + "px";
+
   const r = stage.getBoundingClientRect();
-  const w = Math.max(320, Math.floor(r.width));
-  const h = Math.max(180, Math.floor(r.height));
+  const w = Math.max(120, Math.floor(r.width));
+  const h = Math.max(70, Math.floor(r.height));
   const newDpr = Math.min(window.devicePixelRatio || 1, 2);
 
   if (w === W && h === H && newDpr === dpr) return;
 
   dpr = newDpr;
-  canvas.width = Math.floor(w*dpr);
-  canvas.height = Math.floor(h*dpr);
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
+  canvas.width = Math.floor(w * dpr);
+  canvas.height = Math.floor(h * dpr);
+  canvas.style.width = w + "px";
+  canvas.style.height = h + "px";
   W = w;
   H = h;
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 function fitTrunkToViewport() {
-  if (!trunk || !trunkFrame) return;
+  if (!trunk || !trunkFrame || !stage) return;
 
-  trunk.style.transform = 'scale(1)';
-  trunkFrame.style.height = 'auto';
+  trunk.style.transform = "translateY(0) scale(1)";
+  trunkFrame.style.height = "auto";
 
   const vv = window.visualViewport;
   const viewportH = vv && vv.height ? vv.height : window.innerHeight;
   const viewportW = vv && vv.width ? vv.width : window.innerWidth;
   const isPortrait = viewportH >= viewportW;
 
-  if (!isPortrait) {
-    return;
+  const footerH = footer ? footer.getBoundingClientRect().height + 8 : 0;
+  const stageBottom = stage.getBoundingClientRect().bottom;
+  const baseTop = trunk.getBoundingClientRect().top;
+  const naturalH = Math.max(1, trunk.getBoundingClientRect().height);
+  const firstMenuItem = trunk.querySelector("details");
+  const firstItemHeight = firstMenuItem ? firstMenuItem.getBoundingClientRect().height : 0;
+
+  const desiredGap = isPortrait ? 24 : 32;
+  const targetTop = stageBottom - desiredGap + firstItemHeight;
+  let lift = Math.max(0, baseTop - targetTop);
+
+  let topAfterLift = baseTop - lift;
+  const bottomGap = isPortrait ? 6 : 10;
+  let availableH = Math.max(90, viewportH - topAfterLift - footerH - bottomGap);
+
+  if (availableH < naturalH) {
+    const deficit = naturalH - availableH;
+    const maxCanopyOverlap = isPortrait ? 120 : 220;
+    const maxExtraByCanopy = Math.max(0, topAfterLift - (stageBottom - maxCanopyOverlap));
+    const maxExtraByPolicy = isPortrait ? viewportH * 0.18 : viewportH * 0.34;
+    const extraLift = Math.min(deficit, maxExtraByCanopy, maxExtraByPolicy);
+    lift += extraLift;
+
+    topAfterLift = baseTop - lift;
+    availableH = Math.max(90, viewportH - topAfterLift - footerH - bottomGap);
   }
 
-  const footerH = footer ? (footer.getBoundingClientRect().height + 10) : 0;
-  const frameTop = trunkFrame.getBoundingClientRect().top;
-  const naturalH = Math.max(1, trunk.getBoundingClientRect().height);
-  const availableH = Math.max(120, viewportH - frameTop - footerH - 6);
   const scale = Math.min(1, availableH / naturalH);
-
-  trunk.style.transform = `scale(${scale})`;
-  trunkFrame.style.height = `${naturalH * scale}px`;
+  trunk.style.transform = `translateY(${-lift}px) scale(${scale})`;
+  const flowHeight = Math.max(1, naturalH * scale - lift);
+  trunkFrame.style.height = `${flowHeight}px`;
 }
 
-let fitRAF = 0;
-function scheduleFit() {
+function scheduleFit(options = {}) {
+  const force = !!options.force;
+  if (!force && isZoomedViewport()) return;
   if (fitRAF) cancelAnimationFrame(fitRAF);
   fitRAF = requestAnimationFrame(() => {
     fitCanvas();
@@ -380,122 +386,110 @@ function scheduleFit() {
   });
 }
 
-scheduleFit();
-const ro = new ResizeObserver(() => {
-  clearTimeout(window._fit);
-  window._fit = setTimeout(scheduleFit, 60);
-});
-ro.observe(stage);
-window.addEventListener('resize', () => {
-  clearTimeout(window._fit2);
-  window._fit2 = setTimeout(scheduleFit, 80);
-}, { passive: true });
-
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', scheduleFit, { passive: true });
-}
-
-document.querySelectorAll('.tree-container details').forEach((el) => {
-  el.addEventListener('toggle', () => setTimeout(scheduleFit, 0));
-});
-
-function pointInPoly(px, py, poly){
-  let inside=false;
-  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
-    const a=poly[i], b=poly[j];
-    if(((a.y>py)!=(b.y>py)) && (px < (b.x-a.x)*(py-a.y)/(b.y-a.y+1e-12)+a.x)) inside=!inside;
-  }
-  return inside;
-}
-
 const rnd = RNG(987654321);
 const boundary = euPath(2400);
 const NODES = [];
-(function genNodes(){
+const EDGES = [];
+const DEEP_NODES = [];
+const DEEP_EDGES = [];
+const PULSES = [];
+
+(function genNodes() {
   const attempts = 4500;
-  for(let i=0;i<attempts && NODES.length < 420;i++){
-    const bx = Math.pow(rnd(),0.9)*0.78 + 0.11;
-    const by = Math.pow(rnd(),1.15)*0.78 + 0.11;
-    const x = Math.min(0.94, Math.max(0.06, bx + (rnd()-0.5)*0.06));
-    const y = Math.min(0.94, Math.max(0.06, by + (rnd()-0.5)*0.06));
-    if(pointInPoly(x,y,boundary)){
-      NODES.push({x,y,phase:rnd()*Math.PI*2,radius:1.6 + rnd()*1.8,bio:rnd()});
+  for (let i = 0; i < attempts && NODES.length < 420; i++) {
+    const bx = Math.pow(rnd(), 0.9) * 0.78 + 0.11;
+    const by = Math.pow(rnd(), 1.15) * 0.78 + 0.11;
+    const x = Math.min(0.94, Math.max(0.06, bx + (rnd() - 0.5) * 0.06));
+    const y = Math.min(0.94, Math.max(0.06, by + (rnd() - 0.5) * 0.06));
+    if (pointInPoly(x, y, boundary)) {
+      NODES.push({ x, y, phase: rnd() * Math.PI * 2, radius: 1.6 + rnd() * 1.8, bio: rnd() });
     }
   }
 })();
 
-const EDGES = [];
-(function linkNodes(){
+(function linkNodes() {
   const maxNeighbors = 6;
   const keys = new Set();
-  for(let i=0;i<NODES.length;i++){
+  for (let i = 0; i < NODES.length; i++) {
     const a = NODES[i];
-    const list=[];
-    for(let j=0;j<NODES.length;j++){
-      if(i===j) continue;
-      const b=NODES[j];
-      const dx=a.x-b.x, dy=a.y-b.y;
-      const d2 = dx*dx + dy*dy;
-      if(d2<0.06 && d2>0.0035) list.push({j,d2});
+    const list = [];
+    for (let j = 0; j < NODES.length; j++) {
+      if (i === j) continue;
+      const b = NODES[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < 0.06 && d2 > 0.0035) list.push({ j, d2 });
     }
-    list.sort((p,q)=>p.d2-q.d2);
-    for(let k=0;k<Math.min(maxNeighbors,list.length);k++){
+    list.sort((p, q) => p.d2 - q.d2);
+    for (let k = 0; k < Math.min(maxNeighbors, list.length); k++) {
       const j = list[k].j;
-      const key=[Math.min(i,j),Math.max(i,j)].join('-');
-      if(!keys.has(key)){
+      const key = [Math.min(i, j), Math.max(i, j)].join("-");
+      if (!keys.has(key)) {
         keys.add(key);
-        EDGES.push({a:i,b:j,key,strength:0.28 + rnd()*0.7});
+        EDGES.push({ a: i, b: j, strength: 0.28 + rnd() * 0.7 });
       }
     }
   }
 })();
 
-const DEEP_NODES=[];
-for(let i=0;i<Math.min(220,Math.floor(NODES.length*0.5));i++){
-  const n=NODES[Math.floor(rnd()*NODES.length)];
-  DEEP_NODES.push({x:n.x+(rnd()-0.5)*0.02, y:n.y+(rnd()-0.5)*0.02, phase:rnd()*Math.PI*2, radius:1.0+rnd()*1.0});
+for (let i = 0; i < Math.min(220, Math.floor(NODES.length * 0.5)); i++) {
+  const n = NODES[Math.floor(rnd() * NODES.length)];
+  DEEP_NODES.push({
+    x: n.x + (rnd() - 0.5) * 0.02,
+    y: n.y + (rnd() - 0.5) * 0.02,
+    phase: rnd() * Math.PI * 2,
+    radius: 1 + rnd()
+  });
 }
 
-const DEEP_EDGES=[];
-for(let i=0;i<DEEP_NODES.length;i++){
-  const a=DEEP_NODES[i];
-  for(let j=i+1;j<DEEP_NODES.length;j++){
-    const b=DEEP_NODES[j];
-    const dx=a.x-b.x, dy=a.y-b.y;
-    const d2 = dx*dx + dy*dy;
-    if(d2<0.045 && d2>0.0018 && rnd()<0.26){
-      DEEP_EDGES.push({a:i,b:j,str:0.22+rnd()*0.5});
+for (let i = 0; i < DEEP_NODES.length; i++) {
+  const a = DEEP_NODES[i];
+  for (let j = i + 1; j < DEEP_NODES.length; j++) {
+    const b = DEEP_NODES[j];
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < 0.045 && d2 > 0.0018 && rnd() < 0.26) {
+      DEEP_EDGES.push({ a: i, b: j, str: 0.22 + rnd() * 0.5 });
     }
   }
 }
 
-const PULSES=[];
-function spawnPulseOnEdge(edgeIndex, deep=false){
-  const e = deep?DEEP_EDGES[edgeIndex]:EDGES[edgeIndex];
-  if(!e) return;
-  const from = deep?DEEP_NODES:NODES;
-  const f = from[e.a], t = from[e.b];
-  const speed=(0.0025+rnd()*0.0045)*(deep?0.6:1.0);
-  PULSES.push({fromIdx:e.a,toIdx:e.b,from:f,to:t,t:0,speed,layerDeep:deep,life:1.0,hue:170+Math.floor(rnd()*40)});
+function spawnPulseOnEdge(edgeIndex, deep) {
+  const e = deep ? DEEP_EDGES[edgeIndex] : EDGES[edgeIndex];
+  if (!e) return;
+  const from = deep ? DEEP_NODES : NODES;
+  const f = from[e.a];
+  const t = from[e.b];
+  const speed = (0.0025 + rnd() * 0.0045) * (deep ? 0.6 : 1);
+  PULSES.push({
+    from: f,
+    to: t,
+    t: 0,
+    speed,
+    layerDeep: deep,
+    life: 1,
+    hue: 170 + Math.floor(rnd() * 40)
+  });
 }
 
-function tickSpawn(){
-  const pcount=PULSES.length;
-  if(rnd()<0.56*(1+Math.min(pcount/40,2))*0.6){
-    const eidx=Math.floor(rnd()*EDGES.length);
-    if(eidx<EDGES.length) spawnPulseOnEdge(eidx,false);
+function tickSpawn() {
+  const pcount = PULSES.length;
+  if (rnd() < 0.56 * (1 + Math.min(pcount / 40, 2)) * 0.6) {
+    const eidx = Math.floor(rnd() * EDGES.length);
+    spawnPulseOnEdge(eidx, false);
   }
-  if(rnd()<0.28){
-    const eidx=Math.floor(rnd()*DEEP_EDGES.length);
-    if(eidx<DEEP_EDGES.length) spawnPulseOnEdge(eidx,true);
+  if (rnd() < 0.28) {
+    const eidx = Math.floor(rnd() * DEEP_EDGES.length);
+    spawnPulseOnEdge(eidx, true);
   }
 }
 
-let lastTime=0;
-let heartbeatTimer=0;
-const HEARTBEAT_INTERVAL=8000;
+let lastTime = 0;
+let heartbeatTimer = 0;
+const HEARTBEAT_INTERVAL = 8000;
 
-const gothicTitle = document.getElementById('gothicTitle');
 function updateGothicTitle(t) {
   let sum = 0;
   for (let i = 0; i < NODES.length; i++) {
@@ -504,7 +498,6 @@ function updateGothicTitle(t) {
   }
   const avg = sum / NODES.length;
   const traffic = Math.min(PULSES.length, 120);
-
   const baseOpacity = 0.22 + 0.18 * avg;
   const trafficBoost = 0.08 + 0.12 * (traffic / 120);
   let dynamicOpacity = baseOpacity + trafficBoost;
@@ -516,15 +509,18 @@ function updateGothicTitle(t) {
   gothicTitle.style.color = `hsl(${hue}, 60%, 80%)`;
 }
 
-function renderFrame(tms){
-  const t = tms*0.001;
-  const dt = Math.min(0.05,(tms-lastTime)/1000||0.016);
-  lastTime=tms;
+function renderFrame(tms) {
+  const t = tms * 0.001;
+  const dt = Math.min(0.05, (tms - lastTime) / 1000 || 0.016);
+  lastTime = tms;
 
   const newDpr = Math.min(window.devicePixelRatio || 1, 2);
-  if(newDpr!==dpr){
+  if (newDpr !== dpr) {
     dpr = newDpr;
-    fitCanvas();
+    if (!isZoomedViewport()) {
+      fitCanvas();
+      scheduleFit();
+    }
   }
 
   ctx.save();
@@ -532,96 +528,169 @@ function renderFrame(tms){
   ctx.rect(0, 0, W, H);
   ctx.clip();
 
-  ctx.lineCap='round';
+  ctx.lineCap = "round";
 
-  for(let i=0;i<DEEP_EDGES.length;i++){
+  for (let i = 0; i < DEEP_EDGES.length; i++) {
     const e = DEEP_EDGES[i];
-    const A=DEEP_NODES[e.a], B=DEEP_NODES[e.b];
-    const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
-    ctx.lineWidth=2.6*e.str;
-    ctx.strokeStyle='rgba(0,160,140,0.0096)';
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-    ctx.lineWidth=0.9*e.str;
-    ctx.strokeStyle='rgba(0,210,180,0.021)';
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+    const A = DEEP_NODES[e.a];
+    const B = DEEP_NODES[e.b];
+    const ax = A.x * W;
+    const ay = A.y * H;
+    const bx = B.x * W;
+    const by = B.y * H;
+
+    ctx.lineWidth = 2.6 * e.str;
+    ctx.strokeStyle = "rgba(0,160,140,0.0096)";
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+
+    ctx.lineWidth = 0.9 * e.str;
+    ctx.strokeStyle = "rgba(0,210,180,0.021)";
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
   }
 
-  for(let i=0;i<EDGES.length;i++){
+  for (let i = 0; i < EDGES.length; i++) {
     const e = EDGES[i];
-    const A=NODES[e.a], B=NODES[e.b];
-    const ax=A.x*W, ay=A.y*H, bx=B.x*W, by=B.y*H;
-    ctx.lineWidth=1.2*e.strength;
-    ctx.strokeStyle='rgba(26,170,150,0.0061)';
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-    ctx.lineWidth=0.9*e.strength;
-    ctx.strokeStyle='rgba(80,230,200,0.0114)';
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-    ctx.lineWidth=0.5*(0.6 + e.strength*0.8);
-    ctx.strokeStyle='rgba(120,255,220,0.021)';
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+    const A = NODES[e.a];
+    const B = NODES[e.b];
+    const ax = A.x * W;
+    const ay = A.y * H;
+    const bx = B.x * W;
+    const by = B.y * H;
+
+    ctx.lineWidth = 1.2 * e.strength;
+    ctx.strokeStyle = "rgba(26,170,150,0.0061)";
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+
+    ctx.lineWidth = 0.9 * e.strength;
+    ctx.strokeStyle = "rgba(80,230,200,0.0114)";
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+
+    ctx.lineWidth = 0.5 * (0.6 + e.strength * 0.8);
+    ctx.strokeStyle = "rgba(120,255,220,0.021)";
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
   }
 
   tickSpawn();
-  heartbeatTimer += dt*1000;
-  if(heartbeatTimer > HEARTBEAT_INTERVAL){
+  heartbeatTimer += dt * 1000;
+  if (heartbeatTimer > HEARTBEAT_INTERVAL) {
     heartbeatTimer = 0;
-    for(let k=0;k<14;k++){
-      const idx = Math.floor(rnd()*EDGES.length);
-      spawnPulseOnEdge(idx,false);
+    for (let k = 0; k < 14; k++) {
+      spawnPulseOnEdge(Math.floor(rnd() * EDGES.length), false);
     }
   }
 
-  for(let i=PULSES.length-1;i>=0;i--){
-    const p=PULSES[i];
-    p.t += p.speed*(1+Math.min(PULSES.length/60,1.5));
-    if(p.t>1.01 || p.life<=0){ PULSES.splice(i,1); continue; }
-
-    const screenX=(p.from.x + (p.to.x - p.from.x)*p.t)*W;
-    const screenY=(p.from.y + (p.to.y - p.from.y)*p.t)*H;
-    const headSize=(p.layerDeep?2.0:2.8)*(0.8+0.6*(1-Math.abs(0.5-p.t)));
-    const tailCount=6;
-
-    for(let s=0;s<tailCount;s++){
-      const tt=p.t-s*0.038;
-      if(tt<0) break;
-      const kk=1-tt;
-      const tx=p.from.x + (p.to.x-p.from.x)*tt;
-      const ty=p.from.y + (p.to.y-p.from.y)*tt;
-      const alpha=0.34*(1-s/tailCount)*kk*(p.layerDeep?0.9:1.0);
-      const size=headSize*(1-s/(tailCount+1));
-      ctx.globalCompositeOperation='lighter';
-      const grad=ctx.createRadialGradient(screenX,screenY,0,screenX,screenY,size*1.4);
-      grad.addColorStop(0, `hsla(${p.hue},88%,${p.layerDeep?55:62}%,${alpha})`);
-      grad.addColorStop(1,'transparent');
-      ctx.fillStyle=grad;
-      ctx.beginPath(); ctx.arc(tx*W,ty*H,size*0.9,0,Math.PI*2); ctx.fill();
-      ctx.globalCompositeOperation='source-over';
+  for (let i = PULSES.length - 1; i >= 0; i--) {
+    const p = PULSES[i];
+    p.t += p.speed * (1 + Math.min(PULSES.length / 60, 1.5));
+    if (p.t > 1.01 || p.life <= 0) {
+      PULSES.splice(i, 1);
+      continue;
     }
-    p.life-=0.0012;
+
+    const screenX = (p.from.x + (p.to.x - p.from.x) * p.t) * W;
+    const screenY = (p.from.y + (p.to.y - p.from.y) * p.t) * H;
+    const headSize = (p.layerDeep ? 2 : 2.8) * (0.8 + 0.6 * (1 - Math.abs(0.5 - p.t)));
+    const tailCount = 6;
+
+    for (let s = 0; s < tailCount; s++) {
+      const tt = p.t - s * 0.038;
+      if (tt < 0) break;
+      const kk = 1 - tt;
+      const tx = p.from.x + (p.to.x - p.from.x) * tt;
+      const ty = p.from.y + (p.to.y - p.from.y) * tt;
+      const alpha = 0.34 * (1 - s / tailCount) * kk * (p.layerDeep ? 0.9 : 1);
+      const size = headSize * (1 - s / (tailCount + 1));
+
+      ctx.globalCompositeOperation = "lighter";
+      const grad = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, size * 1.4);
+      grad.addColorStop(0, `hsla(${p.hue},88%,${p.layerDeep ? 55 : 62}%,${alpha})`);
+      grad.addColorStop(1, "transparent");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(tx * W, ty * H, size * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
+    }
+    p.life -= 0.0012;
   }
 
-  for(let i=0;i<NODES.length;i++){
+  for (let i = 0; i < NODES.length; i++) {
     const n = NODES[i];
-    const b=0.78+0.32*Math.sin(t*1.42+n.phase);
-    const sx=n.x*W, sy=n.y*H;
-    ctx.globalCompositeOperation='lighter';
-    const grad=ctx.createRadialGradient(sx,sy,0,sx,sy,n.radius*1.6*b);
-    grad.addColorStop(0,'rgba(16,200,170,0.06)');
-    grad.addColorStop(1,'transparent');
-    ctx.fillStyle=grad;
-    ctx.beginPath(); ctx.arc(sx,sy,n.radius*1.6*b,0,Math.PI*2); ctx.fill();
-    ctx.globalCompositeOperation='source-over';
+    const b = 0.78 + 0.32 * Math.sin(t * 1.42 + n.phase);
+    const sx = n.x * W;
+    const sy = n.y * H;
+
+    ctx.globalCompositeOperation = "lighter";
+    const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, n.radius * 1.6 * b);
+    grad.addColorStop(0, "rgba(16,200,170,0.06)");
+    grad.addColorStop(1, "transparent");
+    ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.fillStyle=`rgba(120,255,220,${(0.9-n.bio*0.4)*0.5})`;
-    ctx.arc(sx,sy,n.radius*0.9*b,0,Math.PI*2);
+    ctx.arc(sx, sy, n.radius * 1.6 * b, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(120,255,220,${(0.9 - n.bio * 0.4) * 0.5})`;
+    ctx.arc(sx, sy, n.radius * 0.9 * b, 0, Math.PI * 2);
     ctx.fill();
   }
 
   ctx.restore();
-
   updateGothicTitle(t);
   requestAnimationFrame(renderFrame);
 }
+
+scheduleFit({ force: true });
+
+const ro = new ResizeObserver(() => {
+  clearTimeout(window._fit);
+  window._fit = setTimeout(scheduleFit, 60);
+});
+ro.observe(stage);
+
+window.addEventListener("resize", () => {
+  clearTimeout(window._fit2);
+  window._fit2 = setTimeout(scheduleFit, 80);
+}, { passive: true });
+
+if (window.visualViewport) {
+  let lastScale = window.visualViewport.scale || 1;
+  window.visualViewport.addEventListener("resize", () => {
+    const currentScale = window.visualViewport.scale || 1;
+    const wasZoomed = Math.abs(lastScale - 1) > 0.01;
+    const isZoomed = Math.abs(currentScale - 1) > 0.01;
+    lastScale = currentScale;
+
+    if (isZoomed) return;
+    scheduleFit({ force: wasZoomed });
+  }, { passive: true });
+}
+
+window.addEventListener("orientationchange", () => scheduleFit({ force: true }), { passive: true });
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => scheduleFit({ force: true })).catch(() => {});
+}
+
+document.querySelectorAll(".tree-container details").forEach((el) => {
+  el.addEventListener("toggle", () => setTimeout(scheduleFit, 0));
+});
 
 requestAnimationFrame(renderFrame);
 </script>
